@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: note-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: note-app
+  template:
+    metadata:
+      labels:
+        app: note-app
+    spec:
+      containers:
+      - name: note-app
+        image: note-app:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+        - mountPath: /app/notes
+          name: notes-volume
+      volumes:
+      - name: notes-volume
+        hostPath:
+          path: /tmp/notes
+          type: DirectoryOrCreate
